@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Добавление фото{% endblock %}
+
+{% block content %}
+    <div class="text-center">
+        <h1>Добавить фото:</h1>
+        <form method='POST' action='{{ action_url }}' enctype='multipart/form-data'>
+            {% include "partial/form.html" with button_text="Добавить" %}
+        </form>
+    </div>
+{% endblock %}

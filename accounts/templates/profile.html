@@ -24,5 +24,16 @@
             <h6 class="card-subtitle mb-2 text-muted">Почта: {{ user_obj.email }}</h6>
         </div>
     </div>
-    {% include "partial/articles_list_partial.html" %}
+    <h3>Альбомы:</h3>
+    {% for album in user_obj.albums.all %}
+        <button style="border-radius: 5px"><a href="{% url "webapp:AlbumView" album.pk %}"
+                                              style="text-decoration: none;color: blueviolet">{{ album.name }}</a></button>
+    {% endfor %}
+    <br>
+    <h3>Избранное</h3>
+    {% for album in user_obj.user_album.all %}
+        <button style="border-radius: 5px"><a href="{% url "webapp:AlbumView" album.pk %}"
+                                              style="text-decoration: none;color: blueviolet">{{ album.name }}</a></button>
+    {% endfor %}
+    {% include "partial/photo_list_partial.html" %}
 {% endblock %}

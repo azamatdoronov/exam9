@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Редактирование альбома{% endblock %}
+
+{% block content %}
+    <h1>Редактировать альбом:</h1>
+    <form action="" method="post">
+        {% include "partial/form.html" with button_text="Редактировать" %}
+    </form>
+    <a href="{% url "webapp:index" %}">На главную</a>
+{% endblock %}

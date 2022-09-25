@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Удаление фото{% endblock %}
+
+{% block content %}
+    <h1>Удалить фото:</h1>
+    <form action="" method="post">
+        {% csrf_token %}
+        {% include "partial/form.html" with button_text="Удалить" %}
+    </form>
+{% endblock %}

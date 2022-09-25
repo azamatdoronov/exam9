@@ -1,0 +1,73 @@
+<h1 class="text-center">Фото:</h1>
+{% block content %}
+    <div class="row">
+        {% for photo in photo %}
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card mb-3 text-center">
+                    {% if photo.image %}
+                        <img src="{{ photo.image.url }}" class="card-img-top w-35" alt="...">
+                    {% endif %}
+                    <br>
+                    <p class="card-text">Подпись: {{ photo.caption }}</p>
+                    {% if photo.album %}
+                        <p class="card-text">Альбом:
+                            {% for album in photo.album.all %}
+                                <a class="link" href="{% url "webapp:album_view" album.pk %}">{{ album.name }}</a>
+                            {% empty %}
+                                Отсутствует</p>
+                            {% endfor %}
+                    {% endif %}
+
+                    <div style="text-align: center">
+                        {% if request.user in photo.favorites.all %}
+                            <button id="favor{{ forloop.counter }}" class="btn_favor"
+                                    data-pk="{% url 'webapp:favorites_photo' photo.pk %}"
+                                    style="width: 100px; height: 30px; background-color: deepskyblue; border: none; border-radius: 12px;">
+                                Favorite
+                            </button>
+                        {% endif %}
+
+                        {% if request.user not in photo.favorites.all %}
+                            <button id="favor{{ forloop.counter }}" class="btn_favor"
+                                    data-pk="{% url 'webapp:favorites_photo' photo.pk %}"
+                                    style="width: 100px; height: 30px; background-color: deepskyblue; border: none; border-radius: 12px">
+                                Unfavorite
+                            </button>
+                        {% endif %}
+                    </div>
+
+                    <a class="nav-link" href="{% url 'webapp:photo_view' photo.pk %}">Подробнее</a>
+                </div>
+            </div>
+        {% empty %}
+        {% endfor %}
+
+        {% if is_paginated %}
+            <div class="text-center">{% include "partial/pagination.html" %}</div>
+        {% endif %}
+    </div>
+
+    <script>
+        async function changeButton(id, event) {
+            let url = await event.target.dataset['pk'];
+            let response = await fetch(url)
+            let data = await response.json()
+            console.log(response)
+            console.log(data)
+            let button = await document.getElementById(id)
+            if (button.innerText === 'Favorite') {
+                button.innerText = 'Unfavorite'
+            }
+            else if (button.innerText === 'Unfavorite') {
+                button.innerText = 'Favorite'
+            }
+
+        }
+
+        let button = document.getElementsByClassName('btn_favor')
+        for (let i = 0; i < button.length; i++) {
+            button[i].addEventListener('click', () => changeButton(`favor${(i + 1)}`, event))
+        }
+    </script>
+
+{% endblock %}
